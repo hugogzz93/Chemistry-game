@@ -16,6 +16,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.geom.AffineTransform;
 import java.io.IOException;
 import java.net.URL;
 import java.util.LinkedList;
@@ -309,17 +310,20 @@ public final class Game extends JFrame implements Runnable, KeyListener, MouseLi
         }
                 
         //Dibuja los caminadores en la posicion actualizada
-        for (Object iterTarget : arrTargets) {
-            Target target = (Target)iterTarget;
-            g.drawImage(target.getImage(), target.getX(),
-                    target.getY(), this);
-        }
+//        for (Object iterTarget : arrTargets) {
+//            Target target = (Target)iterTarget;
+//            g.drawImage(target.getImage(), target.getX(),
+//                    target.getY(), this);
+//        }
         
         //Dibuja lso corredores en la posicion actualizada
         for (Object iterBullet : arrBullets) {
             Bullet bullet = (Bullet)iterBullet;
-            g.drawImage(bullet.getImage(), bullet.getX(),
-                    bullet.getY(), this);
+            /* draw ball image to the memory image with transformed x/y double values */
+            AffineTransform t = new AffineTransform();
+            t.translate(bullet.getX(), bullet.getY()); // x/y set here, ball.x/y = double, ie: 10.33
+            t.scale(1, 1); // scale = 1 
+            g.drawImage(bullet.getImage(), t, this);
         }
 
     }

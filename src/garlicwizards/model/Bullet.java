@@ -104,7 +104,7 @@ public class Bullet extends Projectile {
      * 
      */
     public boolean collidesWithCoordinates(int iX, int iY) {
-        Rectangle recObjeto = new Rectangle(this.getX(),this.getY(),
+        Rectangle recObjeto = new Rectangle((int)this.getX(), (int)this.getY(),
                 this.getWidth(), this.getHeight());
         return recObjeto.contains(iX, iY);
     }
@@ -121,11 +121,11 @@ public class Bullet extends Projectile {
      * 
      */
     public boolean collidesWithObject(GameObject gobjObject) {
-        Rectangle recObjeto = new Rectangle(this.getX(),this.getY(),
+        Rectangle recObjeto = new Rectangle((int)this.getX(),(int)this.getY(),
                 this.getWidth(), this.getHeight());
         
-        Rectangle recParametro = new Rectangle(gobjObject.getX(),
-                gobjObject.getY(), gobjObject.getWidth(), gobjObject.getHeight());
+        Rectangle recParametro = new Rectangle((int)gobjObject.getX(),
+                (int)gobjObject.getY(), gobjObject.getWidth(), gobjObject.getHeight());
         
         return recObjeto.intersects(recParametro);
     }

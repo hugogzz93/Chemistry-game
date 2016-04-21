@@ -13,11 +13,11 @@ import javax.swing.ImageIcon;
  * @author Beto
  */
 public class GameObject {
-    protected int iX;
-    protected int iY;
+    protected float iX;
+    protected float iY;
     protected ImageIcon imgImage;
 
-    public GameObject(ImageIcon imgImage, int iX, int iY){
+    public GameObject(ImageIcon imgImage, float iX, float iY){
         this.imgImage = imgImage;
         this.iX = iX;
         this.iY = iY; 
@@ -26,14 +26,14 @@ public class GameObject {
     /**
      * @return the iX
      */
-    public int getX() {
+    public float getX() {
         return iX;
     }
 
     /**
      * @return the iY
      */
-    public int getY() {
+    public float getY() {
         return iY;
     }
 
@@ -61,14 +61,14 @@ public class GameObject {
     /**
      * @param iX the iX to set
      */
-    public void setX(int iX) {
+    public void setX(float iX) {
         this.iX = iX;
     }
 
     /**
      * @param iY the iY to set
      */
-    public void setY(int iY) {
+    public void setY(float iY) {
         this.iY = iY;
     }
     
