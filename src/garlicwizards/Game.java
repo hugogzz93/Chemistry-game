@@ -82,6 +82,11 @@ public final class Game extends JFrame implements Runnable, KeyListener, MouseLi
      */
     
      public void init() {
+         arrTargets = new LinkedList();
+         arrBullets = new LinkedList();
+         arrBulletImages = new LinkedList();
+         arrTargetImages = new LinkedList();
+         
          iTargets = 15;
          iSelectedType = 0;
          currentGameState = GAME_STATE.NOT_STARTED;
@@ -91,8 +96,8 @@ public final class Game extends JFrame implements Runnable, KeyListener, MouseLi
          URL urlBulletImg1 = this.getClass().getResource(BULLET_IMG_URL1);
 //         URL urlBulletImg2 = this.getClass().getResource(BULLET_IMG_URL2);
 //         URL urlBulletImg3 = this.getClass().getResource(BULLET_IMG_URL3);
-           Image imgBullet1 = new ImageIcon(this.getClass().getResource(BULLET_IMG_URL1)).getImage();
-//         Image imgBullet1 = Toolkit.getDefaultToolkit().getImage(urlBulletImg1);
+//           Image imgBullet1 = new ImageIcon(this.getClass().getResource(BULLET_IMG_URL1)).getImage();
+         Image imgBullet1 = Toolkit.getDefaultToolkit().getImage(urlBulletImg1);
 //         Image imgBullet2 = Toolkit.getDefaultToolkit().getImage(urlBulletImg2);
 //         Image imgBullet3 = Toolkit.getDefaultToolkit().getImage(urlBulletImg3);         
          arrBulletImages.add(imgBullet1);
