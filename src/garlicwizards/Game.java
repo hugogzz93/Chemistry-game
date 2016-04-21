@@ -31,16 +31,19 @@ public final class Game extends JFrame implements Runnable, KeyListener, MouseLi
     
 //    constants
     public enum GAME_STATE {RUNNING, PAUSE, GAME_OVER, NOT_STARTED};
+
+    public static final String BACKGROUND_IMG_URL = "espacio.png";
+    public static final String GAMEOVER_IMG_URL = "gameOver.png";
     
-    public static final String BULLET_IMG_URL1 = "imagen.gif";
-    public static final String BULLET_IMG_URL2 = "imagen.gif";
-    public static final String BULLET_IMG_URL3 = "imagen.gif";
+    public static final String BULLET_IMG_URL1 = "gray_ball.png";
+//    public static final String BULLET_IMG_URL2 = "imagen.gif";
+//    public static final String BULLET_IMG_URL3 = "imagen.gif";
     
-    public static final String TARGET_IMG_URL1 = "imagen.gif";
-    public static final String TARGET_IMG_URL2 = "imagen.gif";
-    public static final String TARGET_IMG_URL3 = "imagen.gif";
+    public static final String TARGET_IMG_URL1 = "red_ball.png";
+//    public static final String TARGET_IMG_URL2 = "imagen.gif";
+//    public static final String TARGET_IMG_URL3 = "imagen.gif";
     
-    public static final int AMMOUNT_TYPES = 3;
+    public static final int AMMOUNT_TYPES = 1;
     
     public static final int SCREEN_WIDTH = 800;
     public static final int SCREEN_HEIGHT = 600;
@@ -83,34 +86,36 @@ public final class Game extends JFrame implements Runnable, KeyListener, MouseLi
          iSelectedType = 0;
          currentGameState = GAME_STATE.NOT_STARTED;
          setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
-         
+                  
 //       image setup
          URL urlBulletImg1 = this.getClass().getResource(BULLET_IMG_URL1);
-         URL urlBulletImg2 = this.getClass().getResource(BULLET_IMG_URL2);
-         URL urlBulletImg3 = this.getClass().getResource(BULLET_IMG_URL3);
-         Image imgBullet1 = Toolkit.getDefaultToolkit().getImage(urlBulletImg1);
-         Image imgBullet2 = Toolkit.getDefaultToolkit().getImage(urlBulletImg2);
-         Image imgBullet3 = Toolkit.getDefaultToolkit().getImage(urlBulletImg3);         
+//         URL urlBulletImg2 = this.getClass().getResource(BULLET_IMG_URL2);
+//         URL urlBulletImg3 = this.getClass().getResource(BULLET_IMG_URL3);
+           Image imgBullet1 = new ImageIcon(this.getClass().getResource(BULLET_IMG_URL1)).getImage();
+//         Image imgBullet1 = Toolkit.getDefaultToolkit().getImage(urlBulletImg1);
+//         Image imgBullet2 = Toolkit.getDefaultToolkit().getImage(urlBulletImg2);
+//         Image imgBullet3 = Toolkit.getDefaultToolkit().getImage(urlBulletImg3);         
          arrBulletImages.add(imgBullet1);
-         arrBulletImages.add(imgBullet2);
-         arrBulletImages.add(imgBullet3);
+//         arrBulletImages.add(imgBullet2);
+//         arrBulletImages.add(imgBullet3);
          
          
-         URL urlTargetImg1 = this.getClass().getResource(TARGET_IMG_URL1);
-         URL urlTargetImg2 = this.getClass().getResource(TARGET_IMG_URL2);
-         URL urlTargetImg3 = this.getClass().getResource(TARGET_IMG_URL3);
+         URL urlTargetImg1 = this.getClass().getResource(TARGET_IMG_URL1);         
+//         URL urlTargetImg2 = this.getClass().getResource(TARGET_IMG_URL2);
+//         URL urlTargetImg3 = this.getClass().getResource(TARGET_IMG_URL3);
          Image imgTarget1 = Toolkit.getDefaultToolkit().getImage(urlTargetImg1);
-         Image imgTarget2 = Toolkit.getDefaultToolkit().getImage(urlTargetImg2);
-         Image imgTarget3 = Toolkit.getDefaultToolkit().getImage(urlTargetImg3);
+//         Image imgTarget2 = Toolkit.getDefaultToolkit().getImage(urlTargetImg2);
+//         Image imgTarget3 = Toolkit.getDefaultToolkit().getImage(urlTargetImg3);
          arrTargetImages.add(imgTarget1);
-         arrTargetImages.add(imgTarget2);
-         arrTargetImages.add(imgTarget3);       
+//         arrTargetImages.add(imgTarget2);
+//         arrTargetImages.add(imgTarget3);       
          
          
         // initializes bullets & targets
         for(int i  = 0; i < iTargets; i++) {
             int posX = (int) (Math.random() *(0 + SCREEN_WIDTH) - SCREEN_WIDTH);    
             int posY = 0;
+            int iDestY = (int) (Math.random() *(0 + SCREEN_WIDTH) - SCREEN_WIDTH);    
             int iSpeed = (int) (Math.random() *(MIN_SPEED + MAX_SPEED) - MAX_SPEED);    
             int iType = (int) (Math.random() *(0 + AMMOUNT_TYPES) - AMMOUNT_TYPES);
             
@@ -181,7 +186,7 @@ public final class Game extends JFrame implements Runnable, KeyListener, MouseLi
             Bullet bullet = (Bullet)bulletObj;
             if(bullet.isExploding()) {
                 for(Object target : arrTargets ) {
-                    bullet.collidesWith((Target)target);
+                    bullet.collidesWithObject((Target)target);
                 }
             }
         }
@@ -261,11 +266,11 @@ public final class Game extends JFrame implements Runnable, KeyListener, MouseLi
         URL urlBackgroundImg;
         Image imgBackground;
         if(iHp>0){
-             urlBackgroundImg = this.getClass().getResource("espacio.jpg");
+             urlBackgroundImg = this.getClass().getResource(BACKGROUND_IMG_URL);
             imgBackground = Toolkit.getDefaultToolkit().getImage(urlBackgroundImg);
         }
         else{   //imagen de game over cuando se pierde el juego
-            urlBackgroundImg = this.getClass().getResource("gameOver.jpg");
+            urlBackgroundImg = this.getClass().getResource(GAMEOVER_IMG_URL);
             imgBackground = Toolkit.getDefaultToolkit().getImage(urlBackgroundImg);
         }
         //despliega la imagen

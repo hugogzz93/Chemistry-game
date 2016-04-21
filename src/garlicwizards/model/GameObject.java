@@ -5,6 +5,7 @@
  */
 package garlicwizards.model;
 
+import java.awt.Image;
 import javax.swing.ImageIcon;
 
 /**
@@ -39,8 +40,8 @@ public class GameObject {
     /**
      * @return the imgImage
      */
-    public ImageIcon getImage() {
-        return imgImage;
+    public Image getImage() {
+        return imgImage.getImage();
     }
     
     /**
