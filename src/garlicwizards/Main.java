@@ -17,7 +17,7 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Juego juego = new Juego();
+        Game juego = new Game();
         juego.setVisible(true);
         juego.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }

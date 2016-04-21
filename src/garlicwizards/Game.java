@@ -13,9 +13,9 @@ import javax.swing.JFrame;
  *
  * @author hugo
  */
-public final class Juego extends JFrame implements Runnable, KeyListener{
+public final class Game extends JFrame implements Runnable, KeyListener{
     
-    public Juego() {
+    public Game() {
         init();
         start();
     }
