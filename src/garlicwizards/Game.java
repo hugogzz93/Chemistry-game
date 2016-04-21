@@ -32,8 +32,8 @@ public final class Game extends JFrame implements Runnable, KeyListener, MouseLi
 //    constants
     public enum GAME_STATE {RUNNING, PAUSE, GAME_OVER, NOT_STARTED};
 
-    public static final String BACKGROUND_IMG_URL = "espacio.png";
-    public static final String GAMEOVER_IMG_URL = "gameOver.png";
+    public static final String BACKGROUND_IMG_URL = "espacio.jpg";
+    public static final String GAMEOVER_IMG_URL = "gameOver.jpg";
     
     public static final String BULLET_IMG_URL1 = "gray_ball.png";
 //    public static final String BULLET_IMG_URL2 = "imagen.gif";
@@ -88,6 +88,7 @@ public final class Game extends JFrame implements Runnable, KeyListener, MouseLi
          arrTargetImages = new LinkedList();
          
          iTargets = 15;
+         iHp = 100;
          iSelectedType = 0;
          currentGameState = GAME_STATE.NOT_STARTED;
          setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -118,13 +119,13 @@ public final class Game extends JFrame implements Runnable, KeyListener, MouseLi
          
         // initializes bullets & targets
         for(int i  = 0; i < iTargets; i++) {
-            int posX = (int) (Math.random() *(0 + SCREEN_WIDTH) - SCREEN_WIDTH);    
-            int posY = 0;
-            int iDestY = (int) (Math.random() *(0 + SCREEN_WIDTH) - SCREEN_WIDTH);    
-            int iSpeed = (int) (Math.random() *(MIN_SPEED + MAX_SPEED) - MAX_SPEED);    
-            int iType = (int) (Math.random() *(0 + AMMOUNT_TYPES) - AMMOUNT_TYPES);
+            int posX = (int) (Math.random()*SCREEN_WIDTH);
+            int posY = SCREEN_HEIGHT;
+            int iDestY = (int) (Math.random()*SCREEN_WIDTH);
+            int iSpeed = (int) (MIN_SPEED + (int)(Math.random() * ((MAX_SPEED - MIN_SPEED) + 1)));
+            int iType = (int) (Math.random() * (AMMOUNT_TYPES + 1));
             
-            Target target = new Target((ImageIcon) arrTargetImages.get(iType), 
+            Target target = new Target((ImageIcon) arrTargetImages.get(0), 
                     posX, posY, iType);
             
             arrTargets.add(target);
@@ -212,7 +213,7 @@ public final class Game extends JFrame implements Runnable, KeyListener, MouseLi
         int iSpeed = (int) (Math.random() *(MIN_SPEED + MAX_SPEED) - MAX_SPEED);    
         int iType = iSelectedType;
         int iPosX = SCREEN_WIDTH/2;
-        int iPosY = 0;
+        int iPosY = SCREEN_HEIGHT-50;
         
         Bullet bullet = new Bullet((ImageIcon) arrBulletImages.get(iType), iPosX, iPosY,
                 iType, iDestX, iDestY);
