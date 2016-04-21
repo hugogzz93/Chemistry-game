@@ -100,7 +100,7 @@ public final class Game extends JFrame implements Runnable, KeyListener, MouseLi
          Image imgBullet1 = Toolkit.getDefaultToolkit().getImage(urlBulletImg1);
 //         Image imgBullet2 = Toolkit.getDefaultToolkit().getImage(urlBulletImg2);
 //         Image imgBullet3 = Toolkit.getDefaultToolkit().getImage(urlBulletImg3);         
-         arrBulletImages.add(imgBullet1);
+         arrBulletImages.add(new ImageIcon(imgBullet1));
 //         arrBulletImages.add(imgBullet2);
 //         arrBulletImages.add(imgBullet3);
          
@@ -111,7 +111,7 @@ public final class Game extends JFrame implements Runnable, KeyListener, MouseLi
          Image imgTarget1 = Toolkit.getDefaultToolkit().getImage(urlTargetImg1);
 //         Image imgTarget2 = Toolkit.getDefaultToolkit().getImage(urlTargetImg2);
 //         Image imgTarget3 = Toolkit.getDefaultToolkit().getImage(urlTargetImg3);
-         arrTargetImages.add(imgTarget1);
+         arrTargetImages.add(new ImageIcon(imgTarget1));
 //         arrTargetImages.add(imgTarget2);
 //         arrTargetImages.add(imgTarget3);       
          
