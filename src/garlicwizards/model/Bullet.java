@@ -35,8 +35,10 @@ public class Bullet extends Projectile {
         super(imgImage, iX, iY, iType);
         this.iDestinationX = iDestinationX;
         this.iDestinationY = iDestinationY;
-        float fDeltaX = (float)(iDestinationX - iX);
-        float fDeltaY = (float)(iDestinationY - iY);
+        float fDeltaX = (float)(iDestinationX - (iX - this.getWidth()/2));
+        float fDeltaY = (float)(iDestinationY - (iY - this.getHeight()/2));
+        System.out.printf("Positions = X: %d, Y: %d\n", iX, iY);
+        System.out.printf("Deltas = dX: %.2f, dY: %.2f\n", fDeltaX, fDeltaY);
         this.setDirection(fDeltaX, fDeltaY);
     }
     

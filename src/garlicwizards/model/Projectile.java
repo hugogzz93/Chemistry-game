@@ -24,8 +24,8 @@ public class Projectile extends GameObject {
      * vector and its speed.
      */
     public void move(){
-        this.iX += (int) (fDirectionX * iSpeed);
-        this.iY += (int) (fDirectionY * iSpeed);
+        this.setX(this.iX + (int) (fDirectionX * iSpeed));
+        this.setY(this.iY + (int) (fDirectionY * iSpeed));
     }
     
     /**
@@ -35,9 +35,9 @@ public class Projectile extends GameObject {
      * @param iDeltaY
      */
     public void setDirection(float iDeltaX, float iDeltaY){
-        System.out.printf("> Setting direction = [%f, %f]\n", iDeltaX, iDeltaY);
-        this.fDirectionX = (iDeltaX) / (iDeltaX + iDeltaY);
-        this.fDirectionY = (iDeltaY) / (iDeltaX + iDeltaY);
+        this.fDirectionX = (iDeltaX) / (Math.abs(iDeltaX) + Math.abs(iDeltaY));
+        this.fDirectionY = (iDeltaY) / (Math.abs(iDeltaY) + Math.abs(iDeltaX));
+        System.out.printf("> Setting direction = [%f, %f]\n", this.fDirectionX, this.fDirectionY);
     }
     
     /**

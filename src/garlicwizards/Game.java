@@ -10,6 +10,7 @@ import garlicwizards.model.Target;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -210,13 +211,15 @@ public final class Game extends JFrame implements Runnable, KeyListener, MouseLi
      * 
      */ 
     private void generateBullet(int iDestX, int iDestY) {
-        int iSpeed = (int) (Math.random() *(MIN_SPEED + MAX_SPEED) - MAX_SPEED);    
+        int iSpeed = 5;    
         int iType = iSelectedType;
         int iPosX = SCREEN_WIDTH/2;
-        int iPosY = SCREEN_HEIGHT-50;
+        int iPosY = SCREEN_HEIGHT;
         
         Bullet bullet = new Bullet((ImageIcon) arrBulletImages.get(iType), iPosX, iPosY,
                 iType, iDestX, iDestY);
+        bullet.setY(SCREEN_HEIGHT - bullet.getHeight());
+        bullet.setSpeed(iSpeed);
         
         arrBullets.add(bullet);
     }
@@ -242,8 +245,10 @@ public final class Game extends JFrame implements Runnable, KeyListener, MouseLi
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        int x=e.getX();
-        int y=e.getY();
+        System.out.printf("Coords = X: %d, Y: %d\n", e.getX(), e.getY());
+        Point pos = e.getPoint();
+        int x = pos.x;
+        int y = pos.y;
         generateBullet(x, y);
     }
 

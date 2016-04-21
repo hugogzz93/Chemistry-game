@@ -57,6 +57,20 @@ public class GameObject {
     public int getHeight(){
         return imgImage.getIconHeight();
     }
+
+    /**
+     * @param iX the iX to set
+     */
+    public void setX(int iX) {
+        this.iX = iX;
+    }
+
+    /**
+     * @param iY the iY to set
+     */
+    public void setY(int iY) {
+        this.iY = iY;
+    }
     
     
     
