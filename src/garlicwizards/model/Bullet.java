@@ -5,6 +5,7 @@
  */
 package garlicwizards.model;
 
+import java.awt.Rectangle;
 import javax.swing.ImageIcon;
 
 /**
@@ -21,6 +22,7 @@ public class Bullet extends Projectile {
     
     /**
      * Constructor
+     * 
      * @param imgImage
      * @param iX
      * @param iY
@@ -40,8 +42,10 @@ public class Bullet extends Projectile {
     
     /**
      * isExploding
+     * 
      * Checks if the bullet is exploding, and if it is, it reduces the 
      * exploding timer. When the timer is over, it resets it and the condition.
+     * 
      * @return <code>bExploding</code>
      */
     public boolean isExploding(){
@@ -56,6 +60,12 @@ public class Bullet extends Projectile {
         return bExploding;
     }
     
+    /**
+     * move
+     * 
+     * Superclass overriden method that also checks if the bullet has to
+     * explode in contact to the mouse click destination zone.
+     */
     @Override
     public void move(){
         super.move();
@@ -80,4 +90,42 @@ public class Bullet extends Projectile {
         return (iSpeed > 0);
     }
     
+    /** 
+     * collidesWithCoordinates
+     * 
+     * Method to check if the <code>Bullet</code> object collides with a point
+     * int the screen. Uses temporal <code>Rectangle</code> object to achieve this.
+     * 
+     * @param iX
+     * @param iY
+     * @return true if collided, false otherwise
+     * 
+     */
+    public boolean collidesWithCoordinates(int iX, int iY) {
+        Rectangle recObjeto = new Rectangle(this.getX(),this.getY(),
+                this.getWidth(), this.getHeight());
+        return recObjeto.contains(iX, iY);
+    }
+    
+    /** 
+     * collidesWithObject
+     * 
+     * Method to check if the <code>Bullet</code> object collides with another 
+     * <code>GameObject</code> on the screen. Uses temporal 
+     * <code>Rectangle</code> object to achieve this.
+     * 
+     * @param gobjObject
+     * @return  true if collided, false otherwise
+     * 
+     */
+    public boolean collidesWithObject(GameObject gobjObject) {
+        Rectangle recObjeto = new Rectangle(this.getX(),this.getY(),
+                this.getWidth(), this.getHeight());
+        
+        Rectangle recParametro = new Rectangle(gobjObject.getX(),
+                gobjObject.getY(), gobjObject.getWidth(), gobjObject.getHeight());
+        
+        return recObjeto.intersects(recParametro);
+    }
+
 }
