@@ -318,8 +318,18 @@ public final class Game extends JFrame implements Runnable, KeyListener, MouseLi
         //Dibuja lso corredores en la posicion actualizada
         for (Object iterBullet : arrBullets) {
             Bullet bullet = (Bullet)iterBullet;
-            g.drawImage(bullet.getImage(), (bullet.getX() - bullet.getWidth()/2),
-                (bullet.getY() - bullet.getHeight()/2), this);     
+            
+            if(!bullet.isExploding()){
+                g.drawImage(bullet.getImage(), (bullet.getX() - bullet.getWidth()/2),
+                    (bullet.getY() - bullet.getHeight()/2), this); 
+            }
+            else {
+                URL urlExplosion = this.getClass().getResource("explosion.gif");
+                ImageIcon imgExplosion = new ImageIcon(urlExplosion);
+                g.drawImage(imgExplosion.getImage(), (bullet.getX() - bullet.getWidth()/2),
+                    (bullet.getY() - bullet.getHeight()/2), this); 
+            }
+    
         }
 
     }

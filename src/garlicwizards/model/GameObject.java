@@ -45,6 +45,14 @@ public class GameObject {
     }
     
     /**
+     * sets the imgImage
+     * @param imgImage
+     */
+    public void setImage(ImageIcon imgImage) {
+        this.imgImage = imgImage;
+    }
+    
+    /**
      * @return the width
      */
     public int getWidth() {
