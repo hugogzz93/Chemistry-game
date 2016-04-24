@@ -301,7 +301,7 @@ public final class Game extends JFrame implements Runnable, KeyListener, MouseLi
     
     public void paintAux(Graphics g) {
         //se despliegan las vidas en la esquina superior izquierda
-        g.setColor(Color.RED);
+        g.setColor(Color.WHITE);
         g.drawString("Vidas: "+ iHp, 20, 35);
         g.drawString("Score: " + iScore, 20, 50);
         if(currentGameState == GAME_STATE.PAUSE) {
@@ -318,8 +318,8 @@ public final class Game extends JFrame implements Runnable, KeyListener, MouseLi
         //Dibuja lso corredores en la posicion actualizada
         for (Object iterBullet : arrBullets) {
             Bullet bullet = (Bullet)iterBullet;
-            g.drawImage(bullet.getImage(), bullet.getX(),
-                    bullet.getY(), this);
+            g.drawImage(bullet.getImage(), (bullet.getX() - bullet.getWidth()/2),
+                (bullet.getY() - bullet.getHeight()/2), this);     
         }
 
     }

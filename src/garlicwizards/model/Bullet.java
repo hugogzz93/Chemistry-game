@@ -17,8 +17,9 @@ public class Bullet extends Projectile {
     private int iDestinationX;          // X component of destination point
     private int iDestinationY;          // Y component of destination point
     private int iExplodeTimer = 750;
-    private int iDoF = 10;              // Degrees of freedom to reach dest.
+    private int iDoF = 70;              // Degrees of freedom to reach dest.
     private boolean bExploding = false;
+    private boolean bDead = false;
     
     /**
      * Constructor
@@ -56,7 +57,7 @@ public class Bullet extends Projectile {
                 iExplodeTimer -= 1;
             } else {
                 iExplodeTimer = 750; // resetting the timer
-                bExploding = false;
+                bDead = true;
             }
         }
         return bExploding;
@@ -70,16 +71,21 @@ public class Bullet extends Projectile {
      */
     @Override
     public void move(){
-        super.move();
-        
-        // if the bullet direction in X is negative, invert the degrees of freedom
-        int iAuxDoF = (fDirectionX > 0) ? iDoF : -iDoF;
-        
-        // if the bullet has reached the enclosed area of its destination
-        if (iX <= (iDestinationX + iAuxDoF) && iX >= (iDestinationX - iAuxDoF) &&
-            iY <= (iDestinationX + iAuxDoF) && iY >= (iDestinationX - iAuxDoF))
-        {
-            bExploding = true;
+        // moves only if it isn't exploding
+        if (!bExploding) {
+            super.move();
+            
+            // if the bullet has reached the enclosed area of its destination, explode
+            if (iX <= (iDestinationX + iDoF) && iX >= (iDestinationX - iDoF) &&
+                iY <= (iDestinationY + iDoF) && iY >= (iDestinationY - iDoF)) {
+                
+                // set exploding to true
+                bExploding = true;
+                
+                // move the ball to the destination pos
+                iX = iDestinationX;
+                iY = iDestinationY;
+            }
         }
     }
     
@@ -90,6 +96,15 @@ public class Bullet extends Projectile {
      */
     public boolean isMoving() {
         return (iSpeed > 0);
+    }
+    
+    /**
+     * isDead
+     * Checks if the bullet is dead (exploded).
+     * @return <code>iSpeed > 0</code>
+     */
+    public boolean isDead() {
+        return bDead;
     }
     
     /** 
