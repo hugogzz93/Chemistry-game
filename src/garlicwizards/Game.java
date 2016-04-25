@@ -49,8 +49,8 @@ public final class Game extends JFrame implements Runnable, KeyListener, MouseLi
     public static final int SCREEN_WIDTH = 800;
     public static final int SCREEN_HEIGHT = 600;
     
-    public static final int MIN_SPEED = 1;
-    public static final int MAX_SPEED = 2;
+    public static final int MIN_SPEED = 3;
+    public static final int MAX_SPEED = 5;
     
     private Image    imgApplet;   // Imagen a proyectar en Applet   
     private Graphics graphApplet;  // Objeto grafico de la Imagen
@@ -327,17 +327,13 @@ public final class Game extends JFrame implements Runnable, KeyListener, MouseLi
         for (Object iterBullet : arrBullets) {
             Bullet bullet = (Bullet)iterBullet;
             
-            if(!bullet.isExploding()){
-                g.drawImage(bullet.getImage(), (bullet.getX() - bullet.getWidth()/2),
-                    (bullet.getY() - bullet.getHeight()/2), this); 
-            }
-            else {
+            if(bullet.isExploding()){
                 URL urlExplosion = this.getClass().getResource("explosion.gif");
                 ImageIcon imgExplosion = new ImageIcon(urlExplosion);
-                g.drawImage(imgExplosion.getImage(), (bullet.getX() - bullet.getWidth()/2),
-                    (bullet.getY() - bullet.getHeight()/2), this); 
+                bullet.setImage(imgExplosion);
             }
-    
+            g.drawImage(bullet.getImage(), (bullet.getX() - bullet.getWidth()/2),
+                (bullet.getY() - bullet.getHeight()/2), this); 
         }
 
     }
