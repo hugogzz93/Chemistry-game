@@ -10,6 +10,7 @@ import static garlicwizards.Game.MAX_SPEED;
 import static garlicwizards.Game.MIN_SPEED;
 import static garlicwizards.Game.SCREEN_HEIGHT;
 import static garlicwizards.Game.SCREEN_WIDTH;
+import java.util.LinkedList;
 import javax.swing.ImageIcon;
 
 /**
@@ -17,7 +18,7 @@ import javax.swing.ImageIcon;
  * @author Beto
  */
 public class Target extends Projectile{
-        
+    
     public Target(ImageIcon imgImage, int iX, int iY, int iType) {
         super(imgImage, iX, iY, iType);
     }
