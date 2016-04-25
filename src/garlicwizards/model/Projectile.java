@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package garlicwizards.model;
+import garlicwizards.Game;
 import java.awt.List;
 import javax.swing.ImageIcon;
 
@@ -17,6 +18,7 @@ public class Projectile extends GameObject {
     protected float fDirectionY; // value bet. 0-1
     protected int iSpeed;
     protected int iType = -1;
+    protected boolean bDead = false;
     
     /**
      * move
@@ -60,4 +62,30 @@ public class Projectile extends GameObject {
         super(imgImage, iX, iY);
         this.iType = iType;
     }   
+    
+    public boolean outOfBounds() {
+        return iX > Game.SCREEN_WIDTH || iX < 0 || 
+                iY > Game.SCREEN_HEIGHT + getHeight() || iY < 0 - getHeight();
+    }
+    
+    /**
+     * kill
+     * 
+     * changes value of <code>bDead</code> to true
+     * 
+     * @return <code>void</code>
+     */
+    public void kill() {
+        bDead = true;
+    }
+    
+        
+    /**
+     * isDead
+     * Checks if the projectile is dead (exploded).
+     * @return <code>bDead</code>
+     */
+    public boolean isDead() {
+        return bDead;
+    }
 }
