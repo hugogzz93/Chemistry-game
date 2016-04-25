@@ -13,10 +13,10 @@ import javax.swing.ImageIcon;
  * @author Beto
  */
 public class Bullet extends Projectile {
-    
+    private static final int EXPLODE_TIMER = 250; //bullet's time to live
     private int iDestinationX;          // X component of destination point
     private int iDestinationY;          // Y component of destination point
-    private int iExplodeTimer = 750;
+    private int iExplodeTimer = EXPLODE_TIMER;
     private int iDoF = 70;              // Degrees of freedom to reach dest.
     private boolean bExploding = false;
     private boolean bDead = false;
@@ -56,8 +56,8 @@ public class Bullet extends Projectile {
             if (iExplodeTimer > 0){
                 iExplodeTimer -= 1;
             } else {
-                iExplodeTimer = 750; // resetting the timer
-                bDead = true;
+                iExplodeTimer = EXPLODE_TIMER; // resetting the timer
+                kill();
             }
         }
         return bExploding;
@@ -96,15 +96,6 @@ public class Bullet extends Projectile {
      */
     public boolean isMoving() {
         return (iSpeed > 0);
-    }
-    
-    /**
-     * isDead
-     * Checks if the bullet is dead (exploded).
-     * @return <code>iSpeed > 0</code>
-     */
-    public boolean isDead() {
-        return bDead;
     }
     
     /** 

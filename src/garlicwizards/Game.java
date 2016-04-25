@@ -12,6 +12,8 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -23,6 +25,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.Timer;
 
 /**
  *
@@ -44,6 +47,7 @@ public final class Game extends JFrame implements Runnable, KeyListener, MouseLi
 //    public static final String TARGET_IMG_URL2 = "imagen.gif";
 //    public static final String TARGET_IMG_URL3 = "imagen.gif";
     
+    public static final String EXPLOSION_GIF1 = "explosion.gif";
     public static final int AMMOUNT_TYPES = 1;
     
     public static final int SCREEN_WIDTH = 800;
@@ -117,7 +121,7 @@ public final class Game extends JFrame implements Runnable, KeyListener, MouseLi
 //         arrTargetImages.add(imgTarget2);
 //         arrTargetImages.add(imgTarget3);       
          
-         
+
         // initializes bullets & targets
         for(int i  = 0; i < iTargets; i++) {
             int posX = (int) (Math.random()*SCREEN_WIDTH);
@@ -147,6 +151,7 @@ public final class Game extends JFrame implements Runnable, KeyListener, MouseLi
         while (iHp>0) {
             update();
             checkCollisions();
+            checkBounds();
             repaint();           
 //            checkGameState();
             try {
@@ -170,12 +175,27 @@ public final class Game extends JFrame implements Runnable, KeyListener, MouseLi
      * 
      */
     private void update() {
-        for(Object bullet : arrBullets) {
-            ((Bullet)bullet).move();
+//        for(Object oBullet : arrBullets) {
+//            Bullet bullet = (Bullet)oBullet;
+//            if(bullet.isDead()) {
+//                arrBullets.remove(bullet);
+//            } else {
+//                bullet.move();
+//            }
+//        }
+
+        for(int i = 0; i < arrBullets.size(); i++) {
+            Bullet bullet = (Bullet)arrBullets.get(i);
+            if(bullet.isDead()) {
+                arrBullets.remove(i--);
+            } else {
+                ((Bullet)arrBullets.get(i)).move();
+            }
         }
         
-        for(Object target : arrTargets) {
-            ((Target)target).move();
+        for(Object oTarget : arrTargets) {
+            Target target = (Target)oTarget;
+            target.move();
         }
     }
     
@@ -193,8 +213,34 @@ public final class Game extends JFrame implements Runnable, KeyListener, MouseLi
             Bullet bullet = (Bullet)bulletObj;
             if(bullet.isExploding()) {
                 for(Object target : arrTargets ) {
-                    bullet.collidesWithObject((Target)target);
+                    if(bullet.collidesWithObject((Target)target)) {
+                        ((Target)target).kill();
+                    }
                 }
+            }
+        }
+    }
+    
+    /** 
+     * checkBounds
+     * 
+     * Checks if any projectile has left the screen bounds.
+     * If so, it summons the appropriate handler.
+     * 
+     * @return void
+     */ 
+    private void checkBounds() {
+        for(int i = 0; i < arrBullets.size(); i++) {
+             Bullet bullet = (Bullet)arrBullets.get(i);
+             if(bullet.outOfBounds()) {
+                 ((Bullet)arrBullets.get(i)).kill();
+             }    
+        }
+        
+        for(int i = 0; i < arrTargets.size(); i++) {
+            Target target = (Target)arrTargets.get(i);
+            if(target.outOfBounds()) {
+                ((Target)arrTargets.get(i)).kill();
             }
         }
     }
@@ -304,6 +350,7 @@ public final class Game extends JFrame implements Runnable, KeyListener, MouseLi
         g.setColor(Color.WHITE);
         g.drawString("Vidas: "+ iHp, 20, 35);
         g.drawString("Score: " + iScore, 20, 50);
+        g.drawString("Balas: " + arrBullets.size(), 20, 85);
         if(currentGameState == GAME_STATE.PAUSE) {
             g.drawString("PAUSA", getWidth()/2, 50);
         }
@@ -324,7 +371,7 @@ public final class Game extends JFrame implements Runnable, KeyListener, MouseLi
                     (bullet.getY() - bullet.getHeight()/2), this); 
             }
             else {
-                URL urlExplosion = this.getClass().getResource("explosion.gif");
+                URL urlExplosion = this.getClass().getResource(EXPLOSION_GIF1);
                 ImageIcon imgExplosion = new ImageIcon(urlExplosion);
                 g.drawImage(imgExplosion.getImage(), (bullet.getX() - bullet.getWidth()/2),
                     (bullet.getY() - bullet.getHeight()/2), this); 
