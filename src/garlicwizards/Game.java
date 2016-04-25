@@ -36,18 +36,18 @@ public final class Game extends JFrame implements Runnable, KeyListener, MouseLi
 //    constants
     public enum GAME_STATE {RUNNING, PAUSE, GAME_OVER, NOT_STARTED};
 
-    public static final String BACKGROUND_IMG_URL = "espacio.jpg";
+    public static final String BACKGROUND_IMG_URL = "background.jpg";
     public static final String GAMEOVER_IMG_URL = "gameOver.jpg";
     
-    public static final String BULLET_IMG_URL1 = "gray_ball.png";
+    public static final String BULLET_IMG_URL1 = "garlic.png";
 //    public static final String BULLET_IMG_URL2 = "imagen.gif";
 //    public static final String BULLET_IMG_URL3 = "imagen.gif";
     
-    public static final String TARGET_IMG_URL1 = "red_ball.png";
+    public static final String TARGET_IMG_URL1 = "cigarette.gif";
 //    public static final String TARGET_IMG_URL2 = "imagen.gif";
 //    public static final String TARGET_IMG_URL3 = "imagen.gif";
     
-    public static final String EXPLOSION_GIF1 = "explosion.gif";
+    public static final String EXPLOSION_GIF1 = "explosion.png";
     public static final int AMMOUNT_TYPES = 1;
     
     public static final int SCREEN_WIDTH = 800;
