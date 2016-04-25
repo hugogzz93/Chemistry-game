@@ -96,7 +96,7 @@ public final class Game extends JFrame implements Runnable, KeyListener, MouseLi
          iTargets = 15;
          iHp = 100;
          iSelectedType = 0;
-         currentGameState = GAME_STATE.NOT_STARTED;
+         currentGameState = GAME_STATE.RUNNING;
          setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
                   
 //       image setup
@@ -293,7 +293,11 @@ public final class Game extends JFrame implements Runnable, KeyListener, MouseLi
                 iSelectedType = (iSelectedType + 1) % AMMOUNT_TYPES;
         }
         else if(e.getKeyCode() == KeyEvent.VK_P) {
-            currentGameState = GAME_STATE.PAUSE;
+            if(currentGameState == GAME_STATE.PAUSE) {
+                currentGameState = GAME_STATE.RUNNING;
+            } else if(currentGameState == GAME_STATE.RUNNING){
+                currentGameState = GAME_STATE.PAUSE;
+            }
         }
     }
 
@@ -361,27 +365,30 @@ public final class Game extends JFrame implements Runnable, KeyListener, MouseLi
         g.drawString("Balas: " + arrBullets.size(), 20, 85);
         if(currentGameState == GAME_STATE.PAUSE) {
             g.drawString("PAUSA", getWidth()/2, 50);
+        } else if(currentGameState == GAME_STATE.RUNNING) {
+            //Dibuja los caminadores en la posicion actualizada
+            for (Object iterTarget : arrTargets) {
+                Target target = (Target)iterTarget;
+                g.drawImage(target.getImage(), target.getX(),
+                        target.getY(), this);
+            }
+
+            //Dibuja lso corredores en la posicion actualizada
+            for (Object iterBullet : arrBullets) {
+                Bullet bullet = (Bullet)iterBullet;
+
+                if(bullet.isExploding()){
+                    URL urlExplosion = this.getClass().getResource(EXPLOSION_GIF1);
+                    ImageIcon imgExplosion = new ImageIcon(urlExplosion);
+                    bullet.setImage(imgExplosion);
+                }
+
+                g.drawImage(bullet.getImage(), (bullet.getX() - bullet.getWidth()/2),
+                    (bullet.getY() - bullet.getHeight()/2), this); 
+            }
         }
                 
-        //Dibuja los caminadores en la posicion actualizada
-        for (Object iterTarget : arrTargets) {
-            Target target = (Target)iterTarget;
-            g.drawImage(target.getImage(), target.getX(),
-                    target.getY(), this);
-        }
         
-        //Dibuja lso corredores en la posicion actualizada
-        for (Object iterBullet : arrBullets) {
-            Bullet bullet = (Bullet)iterBullet;
-            
-            if(bullet.isExploding()){
-                URL urlExplosion = this.getClass().getResource(EXPLOSION_GIF1);
-                ImageIcon imgExplosion = new ImageIcon(urlExplosion);
-                bullet.setImage(imgExplosion);
-            }
-            g.drawImage(bullet.getImage(), (bullet.getX() - bullet.getWidth()/2),
-                (bullet.getY() - bullet.getHeight()/2), this); 
-        }
 
     }
     
