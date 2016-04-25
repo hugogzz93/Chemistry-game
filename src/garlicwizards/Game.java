@@ -53,8 +53,8 @@ public final class Game extends JFrame implements Runnable, KeyListener, MouseLi
     public static final int SCREEN_WIDTH = 800;
     public static final int SCREEN_HEIGHT = 600;
     
-    public static final int MIN_SPEED = 5;
-    public static final int MAX_SPEED = 20;
+    public static final int MIN_SPEED = 1;
+    public static final int MAX_SPEED = 2;
     
     private Image    imgApplet;   // Imagen a proyectar en Applet   
     private Graphics graphApplet;  // Objeto grafico de la Imagen
@@ -63,6 +63,7 @@ public final class Game extends JFrame implements Runnable, KeyListener, MouseLi
     private int iScore;
     private int iHp;
     private int iSelectedType;
+    private int iSecondsCount = 0;
     private GAME_STATE currentGameState;
     
     private int iTargets;
@@ -125,14 +126,13 @@ public final class Game extends JFrame implements Runnable, KeyListener, MouseLi
         // initializes bullets & targets
         for(int i  = 0; i < iTargets; i++) {
             int posX = (int) (Math.random()*SCREEN_WIDTH);
-            int posY = SCREEN_HEIGHT;
-            int iDestY = (int) (Math.random()*SCREEN_WIDTH);
-            int iSpeed = (int) (MIN_SPEED + (int)(Math.random() * ((MAX_SPEED - MIN_SPEED) + 1)));
+            int posY = 0;
             int iType = (int) (Math.random() * (AMMOUNT_TYPES + 1));
             
             Target target = new Target((ImageIcon) arrTargetImages.get(0), 
                     posX, posY, iType);
             
+            target.reset();            
             arrTargets.add(target);
         }
         
@@ -192,11 +192,19 @@ public final class Game extends JFrame implements Runnable, KeyListener, MouseLi
                 ((Bullet)arrBullets.get(i)).move();
             }
         }
-        
-        for(Object oTarget : arrTargets) {
-            Target target = (Target)oTarget;
-            target.move();
+
+        if (iSecondsCount > 100){
+            for(Object target : arrTargets) {
+                if(((Target)target).isDead()) {
+                    ((Target)target).reset();
+                }
+                ((Target)target).move();
+                
+            }
+        } else {
+            iSecondsCount += 1;
         }
+
     }
     
     /** 
@@ -257,7 +265,7 @@ public final class Game extends JFrame implements Runnable, KeyListener, MouseLi
      * 
      */ 
     private void generateBullet(int iDestX, int iDestY) {
-        int iSpeed = 5;    
+        int iSpeed = 10;    
         int iType = iSelectedType;
         int iPosX = SCREEN_WIDTH/2;
         int iPosY = SCREEN_HEIGHT;
