@@ -63,9 +63,27 @@ public class Projectile extends GameObject {
         this.iType = iType;
     }   
     
+    /**
+     * outOfBounds
+     * 
+     * checks if the projectile has left the screen bounds.
+     * 
+     * @return <code>boolean</code>
+     */
     public boolean outOfBounds() {
-        return iX > Game.SCREEN_WIDTH || iX < 0 || 
-                iY > Game.SCREEN_HEIGHT + getHeight() || iY < 0 - getHeight();
+        return iX > Game.SCREEN_WIDTH || iX < 0 || outOfYBounds();
+               
+    }
+    
+    /**
+     * outOfLowerBounds
+     * 
+     * checks if the projectile has left the bottom side of the screen
+     * 
+     * @return <code>boolean</code>
+     */
+    public boolean outOfYBounds() {
+        return  iY > Game.SCREEN_HEIGHT + getHeight() || iY < -getHeight();
     }
     
     /**

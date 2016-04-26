@@ -240,6 +240,7 @@ public final class Game extends JFrame implements Runnable, KeyListener, MouseLi
                 for(Object target : arrTargets ) {
                     if(bullet.collidesWithObject((Target)target)) {
                         ((Target)target).kill();
+                        increaseScore();
                     }
                 }
             }
@@ -257,7 +258,7 @@ public final class Game extends JFrame implements Runnable, KeyListener, MouseLi
     private void checkBounds() {
         for(int i = 0; i < arrBullets.size(); i++) {
              Bullet bullet = (Bullet)arrBullets.get(i);
-             if(bullet.outOfBounds()) {
+             if(bullet.outOfBounds()) {                 
                  ((Bullet)arrBullets.get(i)).kill();
              }    
         }
@@ -265,11 +266,38 @@ public final class Game extends JFrame implements Runnable, KeyListener, MouseLi
         for(int i = 0; i < arrTargets.size(); i++) {
             Target target = (Target)arrTargets.get(i);
             if(target.outOfBounds()) {
+                if(target.outOfYBounds()) {
+                     loseHp();
+                 }
                 ((Target)arrTargets.get(i)).kill();
             }
         }
     }
     
+    /** 
+     * loseHp
+     * 
+     * method to be called whenever the game is to register a loss of hp.
+     * 
+     * @return void
+     */ 
+    private void loseHp() {
+        iHp -= 10;
+        if(iHp <= 0) {
+            currentGameState = GAME_STATE.GAME_OVER;
+        }
+    }
+    
+    /** 
+     * increaseScore
+     * 
+     * method to be called whenever the game is to register an increase of score
+     * 
+     * @return void
+     */ 
+    private void increaseScore() {
+        iScore+=10;
+    }
     /** 
      * generateBullet
      * 
@@ -319,6 +347,9 @@ public final class Game extends JFrame implements Runnable, KeyListener, MouseLi
             else if(e.getKeyCode() == KeyEvent.VK_P) {
                 currentGameState = GAME_STATE.PAUSE;
             }
+            else if(e.getKeyCode() == KeyEvent.VK_C) {
+                currentGameState = GAME_STATE.CREDITS;
+            }
         } else if(currentGameState == GAME_STATE.NOT_STARTED) {
             if(e.getKeyCode() == KeyEvent.VK_E) {
                 initializeData();
@@ -331,8 +362,11 @@ public final class Game extends JFrame implements Runnable, KeyListener, MouseLi
                 currentGameState = GAME_STATE.INFO;
             }
             else if(e.getKeyCode() == KeyEvent.VK_P) {
+                initializeData();
                 currentGameState = GAME_STATE.PAUSE;
             }
+        } else if(currentGameState == GAME_STATE.GAME_OVER) {
+            currentGameState = GAME_STATE.NOT_STARTED;
         }
         
         if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
@@ -375,29 +409,26 @@ public final class Game extends JFrame implements Runnable, KeyListener, MouseLi
         //crea imagen para el background
         URL urlBackgroundImg;
          urlBackgroundImg = this.getClass().getResource(BACKGROUND_IMG_URL);
-         Image imgBackground = Toolkit.getDefaultToolkit().getImage(urlBackgroundImg);
         if(currentGameState == GAME_STATE.RUNNING){
             if(iHp>0){
              urlBackgroundImg = this.getClass().getResource(BACKGROUND_IMG_URL);
-            imgBackground = Toolkit.getDefaultToolkit().getImage(urlBackgroundImg);
             }
             else{   //imagen de game over cuando se pierde el juego
                 urlBackgroundImg = this.getClass().getResource(GAMEOVER_IMG_URL);
-                imgBackground = Toolkit.getDefaultToolkit().getImage(urlBackgroundImg);
             }
         } else if(currentGameState == GAME_STATE.PAUSE) {
                 urlBackgroundImg = this.getClass().getResource(PAUSE_IMG_URL);
-                imgBackground = Toolkit.getDefaultToolkit().getImage(urlBackgroundImg);
         } else if(currentGameState == GAME_STATE.NOT_STARTED) {
                 urlBackgroundImg = this.getClass().getResource(MAINMENU_IMG_URL);
-                imgBackground = Toolkit.getDefaultToolkit().getImage(urlBackgroundImg);
         } else if(currentGameState == GAME_STATE.CREDITS) {
                 urlBackgroundImg = this.getClass().getResource(CREDITS_IMG_URL);
-                imgBackground = Toolkit.getDefaultToolkit().getImage(urlBackgroundImg);
         } else if(currentGameState == GAME_STATE.INFO) {
                 urlBackgroundImg = this.getClass().getResource(INFO_IMG_URL);
-                imgBackground = Toolkit.getDefaultToolkit().getImage(urlBackgroundImg);
+        } else if(currentGameState == GAME_STATE.GAME_OVER) {
+                urlBackgroundImg = this.getClass().getResource(GAMEOVER_IMG_URL);
         }
+        Image imgBackground = Toolkit.getDefaultToolkit().getImage(urlBackgroundImg);
+        
         //despliega la imagen
         graphApplet.drawImage(imgBackground, 0, 0, 
                 getWidth(), getHeight(), this);
@@ -418,10 +449,8 @@ public final class Game extends JFrame implements Runnable, KeyListener, MouseLi
         g.setColor(Color.WHITE);
         g.drawString("Vidas: "+ iHp, 20, 35);
         g.drawString("Score: " + iScore, 20, 50);
-        g.drawString("Balas: " + arrBullets.size(), 20, 85);
-        if(currentGameState == GAME_STATE.PAUSE) {
-            g.drawString("PAUSA", getWidth()/2, 50);
-        } else if(currentGameState == GAME_STATE.RUNNING) {
+//        g.drawString("Balas: " + arrBullets.size(), 20, 85);
+        if(currentGameState == GAME_STATE.RUNNING) {
             //Dibuja los caminadores en la posicion actualizada
             for (Object iterTarget : arrTargets) {
                 Target target = (Target)iterTarget;
