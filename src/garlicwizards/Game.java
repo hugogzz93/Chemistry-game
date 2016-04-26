@@ -34,13 +34,15 @@ import javax.swing.Timer;
 public final class Game extends JFrame implements Runnable, KeyListener, MouseListener{
     
 //    constants
-    public enum GAME_STATE {RUNNING, PAUSE, GAME_OVER, NOT_STARTED, CREDITS};
+    public enum GAME_STATE {RUNNING, PAUSE, GAME_OVER, NOT_STARTED, CREDITS,
+                            INFO};
 
     public static final String BACKGROUND_IMG_URL = "background.jpg";
     public static final String GAMEOVER_IMG_URL = "gameOver.jpg";
     public static final String MAINMENU_IMG_URL = "main_menu.jpg";
     public static final String CREDITS_IMG_URL = "credits.jpg";
     public static final String PAUSE_IMG_URL = "pause.jpg";
+    public static final String INFO_IMG_URL = "info.jpg";
     
     public static final String BULLET_IMG_URL1 = "garlic.png";
 //    public static final String BULLET_IMG_URL2 = "imagen.gif";
@@ -317,11 +319,6 @@ public final class Game extends JFrame implements Runnable, KeyListener, MouseLi
             else if(e.getKeyCode() == KeyEvent.VK_P) {
                 currentGameState = GAME_STATE.PAUSE;
             }
-            
-            else if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-                currentGameState = GAME_STATE.NOT_STARTED;
-            }
-           
         } else if(currentGameState == GAME_STATE.NOT_STARTED) {
             if(e.getKeyCode() == KeyEvent.VK_E) {
                 initializeData();
@@ -330,15 +327,18 @@ public final class Game extends JFrame implements Runnable, KeyListener, MouseLi
             else if(e.getKeyCode() == KeyEvent.VK_C) {    
                 currentGameState = GAME_STATE.CREDITS;
             }
+            else if(e.getKeyCode() == KeyEvent.VK_I) {    
+                currentGameState = GAME_STATE.INFO;
+            }
             else if(e.getKeyCode() == KeyEvent.VK_P) {
                 currentGameState = GAME_STATE.PAUSE;
             }
-        } else if(currentGameState == GAME_STATE.CREDITS) {
-            if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-                currentGameState = GAME_STATE.NOT_STARTED;
-            }
         }
-    
+        
+        if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+            currentGameState = GAME_STATE.NOT_STARTED;
+            iSecondsCount = 0;
+        }
         
     }
 
@@ -393,6 +393,9 @@ public final class Game extends JFrame implements Runnable, KeyListener, MouseLi
                 imgBackground = Toolkit.getDefaultToolkit().getImage(urlBackgroundImg);
         } else if(currentGameState == GAME_STATE.CREDITS) {
                 urlBackgroundImg = this.getClass().getResource(CREDITS_IMG_URL);
+                imgBackground = Toolkit.getDefaultToolkit().getImage(urlBackgroundImg);
+        } else if(currentGameState == GAME_STATE.INFO) {
+                urlBackgroundImg = this.getClass().getResource(INFO_IMG_URL);
                 imgBackground = Toolkit.getDefaultToolkit().getImage(urlBackgroundImg);
         }
         //despliega la imagen
