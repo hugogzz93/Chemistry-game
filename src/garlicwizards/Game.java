@@ -34,10 +34,13 @@ import javax.swing.Timer;
 public final class Game extends JFrame implements Runnable, KeyListener, MouseListener{
     
 //    constants
-    public enum GAME_STATE {RUNNING, PAUSE, GAME_OVER, NOT_STARTED};
+    public enum GAME_STATE {RUNNING, PAUSE, GAME_OVER, NOT_STARTED, CREDITS};
 
     public static final String BACKGROUND_IMG_URL = "background.jpg";
     public static final String GAMEOVER_IMG_URL = "gameOver.jpg";
+    public static final String MAINMENU_IMG_URL = "main_menu.jpg";
+    public static final String CREDITS_IMG_URL = "credits.jpg";
+    public static final String PAUSE_IMG_URL = "pause.jpg";
     
     public static final String BULLET_IMG_URL1 = "garlic.png";
 //    public static final String BULLET_IMG_URL2 = "imagen.gif";
@@ -64,7 +67,7 @@ public final class Game extends JFrame implements Runnable, KeyListener, MouseLi
     private int iHp;
     private int iSelectedType;
     private int iSecondsCount = 0;
-    private GAME_STATE currentGameState;
+    private GAME_STATE currentGameState = GAME_STATE.NOT_STARTED;
     
     private int iTargets;
     private LinkedList arrTargets;
@@ -92,12 +95,9 @@ public final class Game extends JFrame implements Runnable, KeyListener, MouseLi
          arrBullets = new LinkedList();
          arrBulletImages = new LinkedList();
          arrTargetImages = new LinkedList();
-         
-         iTargets = 15;
-         iHp = 100;
-         iSelectedType = 0;
-         currentGameState = GAME_STATE.RUNNING;
+         currentGameState = GAME_STATE.NOT_STARTED;
          setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+         
                   
 //       image setup
          URL urlBulletImg1 = this.getClass().getResource(BULLET_IMG_URL1);
@@ -124,6 +124,24 @@ public final class Game extends JFrame implements Runnable, KeyListener, MouseLi
          
 
         // initializes bullets & targets
+        initializeData();
+        
+        addKeyListener(this);
+        addMouseListener(this);
+    }
+     
+    private void initializeData() {
+         iTargets = 15;
+         iHp = 100;
+         iSelectedType = 0;
+         
+        initializeTargets();
+    }
+     
+     private void initializeTargets() {
+         
+         arrTargets.clear();
+         arrBullets.clear();
         for(int i  = 0; i < iTargets; i++) {
             int posX = (int) (Math.random()*SCREEN_WIDTH);
             int posY = 0;
@@ -135,9 +153,6 @@ public final class Game extends JFrame implements Runnable, KeyListener, MouseLi
             target.reset();            
             arrTargets.add(target);
         }
-        
-        addKeyListener(this);
-        addMouseListener(this);
     }
     
     public void start() {
@@ -161,7 +176,7 @@ public final class Game extends JFrame implements Runnable, KeyListener, MouseLi
                 System.out.println("Hubo un error en el juego " + 
                         iexError.toString());
             }
-            while(currentGameState == GAME_STATE.PAUSE) {
+            while(currentGameState != GAME_STATE.RUNNING) {
                 repaint();
             }
     }
@@ -286,19 +301,45 @@ public final class Game extends JFrame implements Runnable, KeyListener, MouseLi
 
     @Override
     public void keyReleased(KeyEvent e) {
-        if(e.getKeyCode() == KeyEvent.VK_LEFT) {    
-                iSelectedType = iSelectedType == 0 ? AMMOUNT_TYPES: iSelectedType - 1;
-        }
-        else if(e.getKeyCode() == KeyEvent.VK_RIGHT) {    
-                iSelectedType = (iSelectedType + 1) % AMMOUNT_TYPES;
-        }
-        else if(e.getKeyCode() == KeyEvent.VK_P) {
-            if(currentGameState == GAME_STATE.PAUSE) {
+        
+        if(currentGameState == GAME_STATE.PAUSE) {
+            if(e.getKeyCode() == KeyEvent.VK_P) {
                 currentGameState = GAME_STATE.RUNNING;
-            } else if(currentGameState == GAME_STATE.RUNNING){
+            }
+        } else if(currentGameState == GAME_STATE.RUNNING){
+            
+            if(e.getKeyCode() == KeyEvent.VK_LEFT) {    
+                iSelectedType = iSelectedType == 0 ? AMMOUNT_TYPES: iSelectedType - 1;
+            }
+            else if(e.getKeyCode() == KeyEvent.VK_RIGHT) {    
+                    iSelectedType = (iSelectedType + 1) % AMMOUNT_TYPES;
+            }
+            else if(e.getKeyCode() == KeyEvent.VK_P) {
                 currentGameState = GAME_STATE.PAUSE;
             }
+            
+            else if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                currentGameState = GAME_STATE.NOT_STARTED;
+            }
+           
+        } else if(currentGameState == GAME_STATE.NOT_STARTED) {
+            if(e.getKeyCode() == KeyEvent.VK_E) {
+                initializeData();
+                currentGameState = GAME_STATE.RUNNING;
+            }
+            else if(e.getKeyCode() == KeyEvent.VK_C) {    
+                currentGameState = GAME_STATE.CREDITS;
+            }
+            else if(e.getKeyCode() == KeyEvent.VK_P) {
+                currentGameState = GAME_STATE.PAUSE;
+            }
+        } else if(currentGameState == GAME_STATE.CREDITS) {
+            if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                currentGameState = GAME_STATE.NOT_STARTED;
+            }
         }
+    
+        
     }
 
     @Override
@@ -333,14 +374,26 @@ public final class Game extends JFrame implements Runnable, KeyListener, MouseLi
         
         //crea imagen para el background
         URL urlBackgroundImg;
-        Image imgBackground;
-        if(iHp>0){
+         urlBackgroundImg = this.getClass().getResource(BACKGROUND_IMG_URL);
+         Image imgBackground = Toolkit.getDefaultToolkit().getImage(urlBackgroundImg);
+        if(currentGameState == GAME_STATE.RUNNING){
+            if(iHp>0){
              urlBackgroundImg = this.getClass().getResource(BACKGROUND_IMG_URL);
             imgBackground = Toolkit.getDefaultToolkit().getImage(urlBackgroundImg);
-        }
-        else{   //imagen de game over cuando se pierde el juego
-            urlBackgroundImg = this.getClass().getResource(GAMEOVER_IMG_URL);
-            imgBackground = Toolkit.getDefaultToolkit().getImage(urlBackgroundImg);
+            }
+            else{   //imagen de game over cuando se pierde el juego
+                urlBackgroundImg = this.getClass().getResource(GAMEOVER_IMG_URL);
+                imgBackground = Toolkit.getDefaultToolkit().getImage(urlBackgroundImg);
+            }
+        } else if(currentGameState == GAME_STATE.PAUSE) {
+                urlBackgroundImg = this.getClass().getResource(PAUSE_IMG_URL);
+                imgBackground = Toolkit.getDefaultToolkit().getImage(urlBackgroundImg);
+        } else if(currentGameState == GAME_STATE.NOT_STARTED) {
+                urlBackgroundImg = this.getClass().getResource(MAINMENU_IMG_URL);
+                imgBackground = Toolkit.getDefaultToolkit().getImage(urlBackgroundImg);
+        } else if(currentGameState == GAME_STATE.CREDITS) {
+                urlBackgroundImg = this.getClass().getResource(CREDITS_IMG_URL);
+                imgBackground = Toolkit.getDefaultToolkit().getImage(urlBackgroundImg);
         }
         //despliega la imagen
         graphApplet.drawImage(imgBackground, 0, 0, 
