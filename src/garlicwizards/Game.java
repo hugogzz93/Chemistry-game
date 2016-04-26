@@ -133,9 +133,11 @@ public final class Game extends JFrame implements Runnable, KeyListener, MouseLi
     }
      
     private void initializeData() {
-         iTargets = 15;
-         iHp = 100;
-         iSelectedType = 0;
+        iTargets = 15;
+        iHp = 100;
+        iScore = 0;
+        iSelectedType = 0;
+        iSecondsCount = 0;
          
         initializeTargets();
     }
@@ -352,7 +354,6 @@ public final class Game extends JFrame implements Runnable, KeyListener, MouseLi
             }
         } else if(currentGameState == GAME_STATE.NOT_STARTED) {
             if(e.getKeyCode() == KeyEvent.VK_E) {
-                initializeData();
                 currentGameState = GAME_STATE.RUNNING;
             }
             else if(e.getKeyCode() == KeyEvent.VK_C) {    
@@ -361,17 +362,13 @@ public final class Game extends JFrame implements Runnable, KeyListener, MouseLi
             else if(e.getKeyCode() == KeyEvent.VK_I) {    
                 currentGameState = GAME_STATE.INFO;
             }
-            else if(e.getKeyCode() == KeyEvent.VK_P) {
-                initializeData();
-                currentGameState = GAME_STATE.PAUSE;
-            }
         } else if(currentGameState == GAME_STATE.GAME_OVER) {
             currentGameState = GAME_STATE.NOT_STARTED;
         }
         
         if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
             currentGameState = GAME_STATE.NOT_STARTED;
-            iSecondsCount = 0;
+            initializeData();            
         }
         
     }
@@ -445,12 +442,15 @@ public final class Game extends JFrame implements Runnable, KeyListener, MouseLi
     
     
     public void paintAux(Graphics g) {
-        //se despliegan las vidas en la esquina superior izquierda
-        g.setColor(Color.WHITE);
-        g.drawString("Vidas: "+ iHp, 20, 35);
-        g.drawString("Score: " + iScore, 20, 50);
-//        g.drawString("Balas: " + arrBullets.size(), 20, 85);
+
+        // g.drawString("Balas: " + arrBullets.size(), 20, 85);
         if(currentGameState == GAME_STATE.RUNNING) {
+            
+            //se despliegan las vidas en la esquina superior izquierda
+            g.setColor(Color.WHITE);
+            g.drawString("Vidas: "+ iHp, 20, 35);
+            g.drawString("Score: " + iScore, 20, 50);
+            
             //Dibuja los caminadores en la posicion actualizada
             for (Object iterTarget : arrTargets) {
                 Target target = (Target)iterTarget;
