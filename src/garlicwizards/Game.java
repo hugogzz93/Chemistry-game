@@ -6,8 +6,10 @@
 package garlicwizards;
 
 import garlicwizards.model.Bullet;
+import garlicwizards.model.GarlicTips;
 import garlicwizards.model.Target;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
@@ -69,6 +71,7 @@ public final class Game extends JFrame implements Runnable, KeyListener, MouseLi
     private int iHp;
     private int iSelectedType;
     private int iSecondsCount = 0;
+    private String strRandomTip = "";
     private GAME_STATE currentGameState = GAME_STATE.NOT_STARTED;
     
     private int iTargets;
@@ -347,6 +350,7 @@ public final class Game extends JFrame implements Runnable, KeyListener, MouseLi
                     iSelectedType = (iSelectedType + 1) % AMMOUNT_TYPES;
             }
             else if(e.getKeyCode() == KeyEvent.VK_P) {
+                strRandomTip = GarlicTips.getRandomTip();
                 currentGameState = GAME_STATE.PAUSE;
             }
             else if(e.getKeyCode() == KeyEvent.VK_C) {
@@ -448,8 +452,8 @@ public final class Game extends JFrame implements Runnable, KeyListener, MouseLi
             
             //se despliegan las vidas en la esquina superior izquierda
             g.setColor(Color.WHITE);
-            g.drawString("Vidas: "+ iHp, 20, 35);
-            g.drawString("Score: " + iScore, 20, 50);
+            g.drawString("Vidas: "+ iHp, 20, 50);
+            g.drawString("Score: " + iScore, 20, 75);
             
             //Dibuja los caminadores en la posicion actualizada
             for (Object iterTarget : arrTargets) {
@@ -472,9 +476,19 @@ public final class Game extends JFrame implements Runnable, KeyListener, MouseLi
                     (bullet.getY() - bullet.getHeight()/2), this); 
             }
         }
-                
         
-
+        if (currentGameState == GAME_STATE.PAUSE) {
+            g.setColor(Color.BLACK);
+            g.setFont(new Font("Arial", Font.PLAIN, 22));
+            g.drawString("Dato Curioso:", 100, 300);
+            drawString(g, strRandomTip, 100, 350);
+        }
+                
     }
+    
+    private void drawString(Graphics g, String text, int x, int y) {
+         for (String line : text.split("\n"))
+             g.drawString(line, x, y += g.getFontMetrics().getHeight());
+     }
     
 }
